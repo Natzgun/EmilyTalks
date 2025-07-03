@@ -5,3 +5,7 @@ spring:
 assemblyai:
   api:
     key: ${API_KEY_ASSEMBLY}
+
+deepseek:
+  api:
+    key: ${API_KEY_DEEPSEEK}
