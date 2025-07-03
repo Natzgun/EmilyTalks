@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: emilytalks
+
+assemblyai:
+  api:
+    key: ${API_KEY_ASSEMBLY}
