@@ -41,4 +41,35 @@ public class ConversationController {
 
         return ResponseEntity.ok(transcribedText);
     }
+
+    @PostMapping("/upload-and-transcribe")
+    public ResponseEntity<String> uploadAndTranscribe(@RequestParam("file") MultipartFile file) throws Exception {
+        byte[] audioBytes = file.getBytes();
+        String uploadUrl = assemblyAiSTT.uploadAudioFile(audioBytes);
+        System.out.println("Upload URL: " + uploadUrl);
+
+        String transcriptionId = assemblyAiSTT.transcribeAudio(uploadUrl);
+        System.out.println("Transcription ID: " + transcriptionId);
+
+        Map<String, Object> result;
+        int maxRetries = 10;
+        int retryInterval = 5000;
+        int attempts = 0;
+
+        do {
+            Thread.sleep(retryInterval);
+            result = assemblyAiSTT.getTranscriptionResult(transcriptionId);
+            System.out.println("Transcription Status: " + result.get("status"));
+            attempts++;
+        } while (!"completed".equals(result.get("status")) && attempts < maxRetries);
+
+        if (!"completed".equals(result.get("status"))) {
+            return ResponseEntity.status(202).body("Transcription is still processing. Please try again later.");
+        }
+
+        String transcribedText = (String) result.get("text");
+        System.out.println("Transcribed Text: " + transcribedText);
+
+        return ResponseEntity.ok(transcribedText);
+    }
 }
