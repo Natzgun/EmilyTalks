@@ -8,6 +8,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UserUtterance {
-    private final String texto;
+    private final String text;
     private final Instant timestamp;
 }

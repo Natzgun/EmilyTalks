@@ -1,4 +1,4 @@
-package com.hamuksoft.emilytalks.modules.conversation.infrastructure.client;
+package com.hamuksoft.emilytalks.modules.conversation.infrastructure.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 
 @Component
-public class AssemblyAiSTT {
+public class AssemblyAIConfig {
 
     private static final String BASE_URL = "https://api.assemblyai.com";
     private static final String UPLOAD_ENDPOINT = BASE_URL + "/v2/upload";
@@ -19,7 +19,7 @@ public class AssemblyAiSTT {
 
     private final RestTemplate restTemplate;
 
-    public AssemblyAiSTT(RestTemplate restTemplate) {
+    public AssemblyAIConfig(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
