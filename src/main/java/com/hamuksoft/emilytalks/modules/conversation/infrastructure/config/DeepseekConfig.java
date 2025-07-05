@@ -1,4 +1,4 @@
-package com.hamuksoft.emilytalks.modules.conversation.infrastructure.client;
+package com.hamuksoft.emilytalks.modules.conversation.infrastructure.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 
 @Component
-public class DeepseekClient {
+public class DeepseekConfig {
 
     @Value("${deepseek.api.key}")
     private String apiKey;
@@ -17,7 +17,7 @@ public class DeepseekClient {
 
     private static final String API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-    public DeepseekClient(RestTemplate restTemplate) {
+    public DeepseekConfig(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

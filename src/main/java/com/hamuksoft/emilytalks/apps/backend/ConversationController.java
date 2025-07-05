@@ -1,6 +1,7 @@
 package com.hamuksoft.emilytalks.apps.backend;
 
-import com.hamuksoft.emilytalks.modules.conversation.infrastructure.client.DeepseekClient;
+import com.hamuksoft.emilytalks.modules.conversation.application.dto.ConversationDTO;
+import com.hamuksoft.emilytalks.modules.conversation.infrastructure.config.DeepseekConfig;
 import com.hamuksoft.emilytalks.modules.conversation.application.dto.UserUtteranceDTO;
 import com.hamuksoft.emilytalks.modules.conversation.application.service.ConversationUseCase;
 import com.hamuksoft.emilytalks.modules.conversation.domain.UserUtterance;
@@ -9,15 +10,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/conversation")
 public class ConversationController {
 
-    private final DeepseekClient deepseekClient;
-    public final ConversationUseCase conversationUseCase;
+    private final DeepseekConfig deepseekClient;
+    private final ConversationUseCase conversationUseCase;
 
-    public ConversationController(ConversationUseCase conversationUseCase, DeepseekClient deeseekClient) {
+    public ConversationController(ConversationUseCase conversationUseCase, DeepseekConfig deepseekClient) {
         this.conversationUseCase = conversationUseCase;
         this.deepseekClient = deepseekClient;
     }
@@ -32,6 +34,14 @@ public class ConversationController {
                 .text(utterance.getText()).build();
 
         return ResponseEntity.ok(transcribedText);
+    }
+
+    @PostMapping("/converse")
+    public ResponseEntity<ConversationDTO> converse(@RequestParam("file") MultipartFile file) throws Exception {
+        File tempFile = File.createTempFile("audio", ".ogg");
+        file.transferTo(tempFile);
+        ConversationDTO dto = conversationUseCase.execute(tempFile);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/deepseek")
