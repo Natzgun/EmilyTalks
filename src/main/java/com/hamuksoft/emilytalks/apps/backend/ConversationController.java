@@ -1,46 +1,35 @@
 package com.hamuksoft.emilytalks.apps.backend;
 
-import com.hamuksoft.emilytalks.modules.conversation.infrastructure.client.AssemblyAiSTT;
 import com.hamuksoft.emilytalks.modules.conversation.infrastructure.client.DeepseekClient;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.hamuksoft.emilytalks.modules.conversation.application.dto.UserUtteranceDTO;
+import com.hamuksoft.emilytalks.modules.conversation.application.service.ConversationUseCase;
+import com.hamuksoft.emilytalks.modules.conversation.domain.UserUtterance;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
+import java.io.File;
 
 @RestController
 @RequestMapping("/api/conversation")
 public class ConversationController {
 
-    private final AssemblyAiSTT assemblyAiSTT;
     private final DeepseekClient deepseekClient;
+    public final ConversationUseCase conversationUseCase;
 
-    @Autowired
-    public ConversationController(AssemblyAiSTT assemblyAiSTT, DeepseekClient deepseekClient) {
-        this.assemblyAiSTT = assemblyAiSTT;
+    public ConversationController(ConversationUseCase conversationUseCase, DeepseekClient deeseekClient) {
+        this.conversationUseCase = conversationUseCase;
         this.deepseekClient = deepseekClient;
     }
 
-    @PostMapping("/upload-audio")
-    public ResponseEntity<String> uploadAudio(@RequestParam("file") MultipartFile file) throws Exception {
-        byte[] audioBytes = file.getBytes();
-        String uploadUrl = assemblyAiSTT.uploadAudioFile(audioBytes);
-        return ResponseEntity.ok(uploadUrl);
-    }
+    @PostMapping("/speach-to-text")
+    public ResponseEntity<UserUtteranceDTO> convertSpeachToText(@RequestParam("file") MultipartFile file) throws Exception {
+        File tempFile = File.createTempFile("audio", ".ogg");
+        file.transferTo(tempFile);
 
-    @PostMapping("/transcribe")
-    public ResponseEntity<String> transcribeAudio(@RequestBody Map<String, String> requestBody) {
-        String uploadUrl = requestBody.get("uploadUrl");
-        String transcriptionId = assemblyAiSTT.transcribeAudio(uploadUrl);
-        return ResponseEntity.ok(transcriptionId);
-    }
-
-    @GetMapping("/transcription-result/{id}")
-    public ResponseEntity<String> getTranscriptionResult(@PathVariable("id") String transcriptionId) {
-        Map<String, Object> result = assemblyAiSTT.getTranscriptionResult(transcriptionId);
-
-        String transcribedText = (String) result.get("text");
+        UserUtterance utterance = conversationUseCase.processAudioFile(tempFile);
+        UserUtteranceDTO transcribedText = UserUtteranceDTO.builder()
+                .text(utterance.getText()).build();
 
         return ResponseEntity.ok(transcribedText);
     }
