@@ -1,7 +1,7 @@
 package com.hamuksoft.emilytalks.apps.backend;
 
 import com.hamuksoft.emilytalks.modules.conversation.application.dto.ConversationDTO;
-import com.hamuksoft.emilytalks.modules.conversation.infrastructure.config.DeepseekConfig;
+import com.hamuksoft.emilytalks.modules.conversation.infrastructure.client.DeepseekClient;
 import com.hamuksoft.emilytalks.modules.conversation.application.dto.UserUtteranceDTO;
 import com.hamuksoft.emilytalks.modules.conversation.application.service.ConversationUseCase;
 import com.hamuksoft.emilytalks.modules.conversation.domain.UserUtterance;
@@ -16,10 +16,10 @@ import java.util.Map;
 @RequestMapping("/api/conversation")
 public class ConversationController {
 
-    private final DeepseekConfig deepseekClient;
+    private final DeepseekClient deepseekClient;
     private final ConversationUseCase conversationUseCase;
 
-    public ConversationController(ConversationUseCase conversationUseCase, DeepseekConfig deepseekClient) {
+    public ConversationController(ConversationUseCase conversationUseCase, DeepseekClient deepseekClient) {
         this.conversationUseCase = conversationUseCase;
         this.deepseekClient = deepseekClient;
     }
