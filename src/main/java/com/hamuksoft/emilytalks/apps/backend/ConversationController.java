@@ -56,15 +56,17 @@ public class ConversationController {
     }
 
     @PostMapping("/prepare-agent")
-    public ResponseEntity<Void> prepareAgent(@RequestBody ConversationSetupDTO setupDto) {
+    public ResponseEntity<Map<String, String>> prepareAgent(@RequestBody ConversationSetupDTO setupDto) {
         agentContext.configure(setupDto.getScenario(), setupDto.getTopic());
-        return ResponseEntity.ok().build();
+        Map<String, String> response = Map.of("status", "success");
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/reset-agent")
-    public ResponseEntity<Void> resetAgent() {
+    public ResponseEntity<Map<String, String>> resetAgent() {
         agentContext.clear();
-        return ResponseEntity.ok().build();
+        Map<String, String> response = Map.of("status", "success");
+        return ResponseEntity.ok(response);
     }
 
 }

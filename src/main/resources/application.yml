@@ -9,3 +9,7 @@ assemblyai:
 deepseek:
   api:
     key: ${API_KEY_DEEPSEEK}
+
+cors:
+  allowed:
+    origins: ${CORS_ALLOWED_ORIGINS}
