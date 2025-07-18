@@ -50,4 +50,3 @@ jobs:
             -Dsonar.sources=src/main/java
             -Dsonar.tests=src/test/java
             -Dsonar.exclusions=src/test/java/**
-            -Dsonar.java.libraries=build/libs/*.jar,build/classes/java/main
