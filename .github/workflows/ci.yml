@@ -37,9 +37,6 @@ jobs:
       - name: Build, test & coverage
         run: ./gradlew test jacocoTestReport
 
-      - name: Dependency
-        run: ./gradlew copyDependencies
-
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         with:
