@@ -42,7 +42,7 @@ jobs:
         with:
           projectBaseDir: .
           args: >
-            -Dsonar.projectKey=Natzgun_EmilyTalks
+            -Dsonar.projectKey=4meM_EmilyTalks
             -Dsonar.organization=4mem
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.java.binaries=.
