@@ -24,5 +24,6 @@ public class ReportEntity {
     private Integer vocabularyScore;
 
     @Column(name = "feedback")
+    @Lob
     private String feedback;
 }
