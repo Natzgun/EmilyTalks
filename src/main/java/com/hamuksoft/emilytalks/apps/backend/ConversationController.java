@@ -62,6 +62,12 @@ public class ConversationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/deepseek-feedback")
+    public ResponseEntity<String> deepseekFeedback() {
+        String response = deepseekClient.getFeedBack();
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/reset-agent")
     public ResponseEntity<Map<String, String>> resetAgent() {
         agentContext.clear();

@@ -25,6 +25,14 @@ public class DeepseekClient {
         this.restTemplate = restTemplate;
         this.agentContext = agentContext;
     }
+    public String getFeedBack(){
+        String feedbackPromptBase = "Hello I want to get some feedback in spanish and also in english (separated) about ALL THE CONVERSATION so far. ";
+        String feedbackPoints = "Every grammar mistakes, vocabulary mistakes, some suggestions about have more natural sentences, show what topics should I practice more";
+        String fullFeedbackPrompt = feedbackPromptBase + "I want some feedback in the following points: " + feedbackPoints;
+        String extra = "además me gustaria que la respuesta NO TENGA FORMATO como los dobles asteriscos para resaltar el contenido y similares está bien los bullets y los numeros";
+        fullFeedbackPrompt += " " + extra;
+        return(this.sendMessage(fullFeedbackPrompt));
+    }
 
     public String sendMessage(String message) {
         HttpHeaders headers = new HttpHeaders();
